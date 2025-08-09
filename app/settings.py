@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_adminlte3',
     'sns_core',
+    'social',
+    'webhooks',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +58,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,16 +76,26 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'appdb',      # docker-compose.ymlのMYSQL_DATABASEと一致
-        'USER': 'appuser',    # MYSQL_USER
-        'PASSWORD': 'apppass',# MYSQL_PASSWORD
-        'HOST': 'db',         # サービス名
-        'PORT': '3306',
+import os
+
+if os.environ.get('USE_SQLITE') == '1':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'appdb',      # docker-compose.ymlのMYSQL_DATABASEと一致
+            'USER': 'appuser',    # MYSQL_USER
+            'PASSWORD': 'apppass',# MYSQL_PASSWORD
+            'HOST': 'db',         # サービス名
+            'PORT': '3306',
+        }
+    }
 
 
 # Password validation
