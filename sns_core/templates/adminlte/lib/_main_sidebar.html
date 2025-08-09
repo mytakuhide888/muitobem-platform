@@ -31,6 +31,62 @@
                         <p>表示テスト</p>
                     </a>
                 </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-share-alt"></i>
+                        <p>SNS管理<i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <p>Instagram 管理<i class="right fas fa-angle-left"></i></p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item"><a href="{% url 'ig:dashboard' %}" class="nav-link"><p>ダッシュボード</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:insights' %}" class="nav-link"><p>インサイト</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:inbox' %}" class="nav-link"><p>受信箱</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:automation_reactions' %}" class="nav-link"><p>反応トリガー</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:automation_icebreakers' %}" class="nav-link"><p>よくある質問管理</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:broadcasts' %}" class="nav-link"><p>時間指定配信管理</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:posts' %}" class="nav-link"><p>投稿一覧</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:scheduled' %}" class="nav-link"><p>予約投稿</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:lotteries' %}" class="nav-link"><p>抽選管理</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:surveys' %}" class="nav-link"><p>アンケート管理</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:users' %}" class="nav-link"><p>ユーザー一覧</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:tags' %}" class="nav-link"><p>タグ</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:attributes' %}" class="nav-link"><p>カスタム項目</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:archive' %}" class="nav-link"><p>アーカイブ</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:integration' %}" class="nav-link"><p>連携設定</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:auto_replies' %}" class="nav-link"><p>不在時応答</p></a></li>
+                                <li class="nav-item"><a href="{% url 'ig:status' %}" class="nav-link"><p>ステータス</p></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <p>Threads 管理<i class="right fas fa-angle-left"></i></p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item"><a href="{% url 'th:dashboard' %}" class="nav-link"><p>ダッシュボード</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:insights' %}" class="nav-link"><p>インサイト</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:inbox' %}" class="nav-link"><p>受信箱</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:automation_reactions' %}" class="nav-link"><p>反応トリガー</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:automation_icebreakers' %}" class="nav-link"><p>よくある質問管理</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:broadcasts' %}" class="nav-link"><p>時間指定配信管理</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:posts' %}" class="nav-link"><p>投稿一覧</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:scheduled' %}" class="nav-link"><p>予約投稿</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:lotteries' %}" class="nav-link"><p>抽選管理</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:surveys' %}" class="nav-link"><p>アンケート管理</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:users' %}" class="nav-link"><p>ユーザー一覧</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:tags' %}" class="nav-link"><p>タグ</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:attributes' %}" class="nav-link"><p>カスタム項目</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:archive' %}" class="nav-link"><p>アーカイブ</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:integration' %}" class="nav-link"><p>連携設定</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:auto_replies' %}" class="nav-link"><p>不在時応答</p></a></li>
+                                <li class="nav-item"><a href="{% url 'th:status' %}" class="nav-link"><p>ステータス</p></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 {% endblock nav_links %}
                 {% endblock nav_links_outer %}
             </ul>

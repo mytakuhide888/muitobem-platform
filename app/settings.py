@@ -41,6 +41,11 @@ INSTALLED_APPS = [
     'sns_core',
     'social',
     'webhooks',
+    'social_core',
+    'ig',
+    'th',
+    'social_webhooks',
+    'social_scheduler',
 ]
 
 MIDDLEWARE = [
