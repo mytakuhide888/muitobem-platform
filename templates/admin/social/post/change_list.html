@@ -1,0 +1,14 @@
+{% extends "admin/social/change_list.html" %}
+
+{% block object-tools-items %}
+<li><a href="{{ import_url }}" class="addlink" onclick="event.preventDefault();document.getElementById('import-form').submit();">取り込む</a></li>
+<li><a href="{{ sync_url }}" class="addlink" onclick="event.preventDefault();document.getElementById('sync-form').submit();">最新化する</a></li>
+{{ block.super }}
+{% endblock %}
+
+<form id="import-form" method="post" action="{{ import_url }}" style="display:none;">
+  {% csrf_token %}
+</form>
+<form id="sync-form" method="post" action="{{ sync_url }}" style="display:none;">
+  {% csrf_token %}
+</form>
