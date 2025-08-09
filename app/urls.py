@@ -16,12 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('social/', include('social.urls')),
-    path('webhooks/', include('webhooks.urls')),
+    path('sns/ig/', include(('ig.urls', 'ig'), namespace='ig')),
+    path('sns/th/', include(('th.urls', 'th'), namespace='th')),
+    path('webhooks/', include('social_webhooks.urls')),
     path('test/', TemplateView.as_view(template_name='test.html'), name='test'),
 ]
