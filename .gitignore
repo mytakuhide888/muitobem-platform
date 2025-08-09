@@ -1,0 +1,15 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.env
+
+# Node/Front
+node_modules/
+
+# Docker / DB
+mysql-data/
+*.log
+
+# OS
+.DS_Store
