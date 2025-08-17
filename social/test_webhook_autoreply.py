@@ -2,7 +2,16 @@ import json
 from django.test import Client, TestCase
 from django.utils import timezone
 
-from .models import DMReplyTemplate, AutoReplyRule, WebhookEvent, DMMessage, Job, Platform
+from .models import (
+    DMReplyTemplate,
+    AutoReplyRule,
+    WebhookEvent,
+    DMMessage,
+    Job,
+    Platform,
+    InstagramAccount,
+)
+from .services import auto_reply
 
 
 class WebhookAutoReplyTests(TestCase):
@@ -40,3 +49,10 @@ class WebhookAutoReplyTests(TestCase):
         res = self.client.post('/webhook/instagram/', data=json.dumps(payload), content_type='application/json')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(Job.objects.count(), 0)
+
+    def test_global_rule_matches_with_account(self):
+        account = InstagramAccount.objects.create(
+            display_name='acc', instagram_user_id='1', username='user'
+        )
+        rule = auto_reply.match_rules(Platform.INSTAGRAM, account, 'hello')
+        self.assertIsNotNone(rule)

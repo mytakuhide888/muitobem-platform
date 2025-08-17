@@ -134,8 +134,8 @@ class DMReplyTemplate(models.Model):
 class AutoReplyRule(models.Model):
     name = models.CharField('名称', max_length=100)
     platform = models.CharField('プラットフォーム', max_length=20, choices=Platform.choices)
-    content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True)
-    object_id = models.PositiveIntegerField(null=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True, blank=True)
+    object_id = models.PositiveBigIntegerField(null=True, blank=True)
     account = GenericForeignKey('content_type', 'object_id')
     keywords = models.TextField('キーワード')
     use_regex = models.BooleanField('正規表現', default=False)
@@ -144,6 +144,12 @@ class AutoReplyRule(models.Model):
     enabled = models.BooleanField('有効', default=True)
     active_from = models.TimeField('開始時間', null=True, blank=True)
     active_to = models.TimeField('終了時間', null=True, blank=True)
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        if bool(self.content_type) ^ bool(self.object_id):
+            raise ValidationError('Content type と Object id は同時に設定するか両方空にしてください')
 
     def __str__(self):
         return self.name

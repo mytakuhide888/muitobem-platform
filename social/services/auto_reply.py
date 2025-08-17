@@ -4,6 +4,7 @@ import re
 from datetime import time
 from typing import Optional
 
+from django.db import models
 from django.utils import timezone
 
 from ..models import AutoReplyRule, DMMessage, Job, Platform
@@ -23,11 +24,13 @@ def _time_in_range(start: time | None, end: time | None, now: time) -> bool:
 
 
 def match_rules(platform: str, account, text: str) -> Optional[AutoReplyRule]:
-    qs = AutoReplyRule.objects.filter(platform=platform, enabled=True)
-    if account:
-        from django.contrib.contenttypes.models import ContentType
-        ct = ContentType.objects.get_for_model(account)
-        qs = qs.filter(content_type=ct, object_id=account.pk)
+    from django.contrib.contenttypes.models import ContentType
+
+    ct = ContentType.objects.get_for_model(account) if account else None
+    qs = AutoReplyRule.objects.filter(platform=platform, enabled=True).filter(
+        models.Q(content_type__isnull=True, object_id__isnull=True)
+        | models.Q(content_type=ct, object_id=getattr(account, 'id', None))
+    )
     now = timezone.localtime().time()
     for rule in qs.order_by('id'):
         if not _time_in_range(rule.active_from, rule.active_to, now):
