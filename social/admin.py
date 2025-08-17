@@ -135,6 +135,16 @@ class AutoReplyRuleAdmin(admin.ModelAdmin):
     search_fields = ('name', 'keywords')
     list_filter = ('platform', 'enabled')
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'content_type':
+            from django.contrib.contenttypes.models import ContentType
+
+            kwargs['queryset'] = ContentType.objects.filter(
+                app_label='social',
+                model__in=['instagramaccount', 'threadsaccount']
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 @admin.register(WebhookEvent)
 class WebhookEventAdmin(PerPageAdminMixin, admin.ModelAdmin):
