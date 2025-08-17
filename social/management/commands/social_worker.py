@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from django.conf import settings
 
-from ...models import Job, Platform
+from ...models import Job, Platform, DMReplyTemplate
 from ...services import ig_api, threads_api
 
 
@@ -33,11 +33,20 @@ class Command(BaseCommand):
         job.save(update_fields=['status'])
         try:
             if job.job_type == Job.Type.REPLY:
-                text = job.args.get('text')
+                tmpl = DMReplyTemplate.objects.get(pk=job.args.get('template_id'))
+                context = job.args.get('context', {})
+                class SafeDict(dict):
+                    def __missing__(self, key):
+                        return '{' + key + '}'
+                text = tmpl.reply_text.format_map(SafeDict(context))
+                to = job.args.get('to')
                 if job.platform == Platform.INSTAGRAM:
-                    ig_api.send_dm(job.args.get('access_token', ''), job.args.get('recipient_id', ''), text)
+                    token = ''
+                    if job.account and getattr(job.account, 'linked_facebook', None):
+                        token = job.account.linked_facebook.access_token or ''
+                    ig_api.send_dm(token, to, text)
                 elif job.platform == Platform.THREADS:
-                    threads_api.reply_to_post(job.args.get('post_id', ''), job.args.get('account_token', ''), text)
+                    threads_api.reply_to_post(to, job.args.get('account_token', ''), text)
             job.status = Job.Status.DONE
             job.save(update_fields=['status'])
         except Exception as exc:  # pragma: no cover - network failures
