@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils import timezone
 from .models import (
     FacebookAccount, ThreadsApp, ThreadsAccount, InstagramAccount,
-    ScheduledPost, Post, DMMessage, DMReplyTemplate, AutoReplyRule, WebhookEvent
+    ScheduledPost, Post, DMMessage, DMReplyTemplate, AutoReplyRule, WebhookEvent,
+    Job,
 )
 
 
@@ -89,10 +91,10 @@ class PostAdmin(PerPageAdminMixin, admin.ModelAdmin):
 
 @admin.register(DMMessage)
 class DMMessageAdmin(PerPageAdminMixin, admin.ModelAdmin):
-    list_display = ('platform', 'sender_external_user_id', 'text', 'received_at')
-    search_fields = ('sender_external_user_id', 'text')
-    list_filter = ('platform',)
-    ordering = ('-received_at',)
+    list_display = ('platform', 'user_id', 'text', 'sent_at', 'direction')
+    search_fields = ('user_id', 'text')
+    list_filter = ('platform', 'direction')
+    ordering = ('-sent_at',)
     change_list_template = 'admin/social/change_list.html'
 
 
@@ -111,7 +113,19 @@ class AutoReplyRuleAdmin(admin.ModelAdmin):
 
 @admin.register(WebhookEvent)
 class WebhookEventAdmin(PerPageAdminMixin, admin.ModelAdmin):
-    list_display = ('platform', 'event_type', 'received_at', 'processed')
-    list_filter = ('platform', 'processed')
+    list_display = ('platform', 'field', 'received_at', 'signature_valid')
+    list_filter = ('platform', 'signature_valid')
     ordering = ('-received_at',)
     change_list_template = 'admin/social/change_list.html'
+
+
+@admin.register(Job)
+class JobAdmin(PerPageAdminMixin, admin.ModelAdmin):
+    list_display = ('job_type', 'platform', 'run_at', 'status', 'retries', 'last_error')
+    list_filter = ('platform', 'status', 'job_type')
+    ordering = ('-run_at',)
+    actions = ['run_now']
+
+    def run_now(self, request, queryset):
+        queryset.update(run_at=timezone.now(), status=Job.Status.PENDING)
+    run_now.short_description = '今すぐ実行'

@@ -104,17 +104,23 @@ class Post(models.Model):
 
 
 class DMMessage(models.Model):
+    class Direction(models.TextChoices):
+        IN = 'IN', 'In'
+        OUT = 'OUT', 'Out'
+
     platform = models.CharField('プラットフォーム', max_length=20, choices=Platform.choices)
     content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True)
     object_id = models.PositiveIntegerField(null=True)
     account = GenericForeignKey('content_type', 'object_id')
-    sender_external_user_id = models.CharField('送信者ID', max_length=100)
+    user_id = models.CharField('ユーザーID', max_length=100)
     text = models.TextField('本文')
-    received_at = models.DateTimeField('受信時間')
+    direction = models.CharField('方向', max_length=3, choices=Direction.choices, default=Direction.IN)
+    sent_at = models.DateTimeField('送受信時間')
+    external_ids = models.JSONField('外部ID', default=dict, blank=True)
     raw_json = models.JSONField('受信JSON', default=dict)
 
     def __str__(self):
-        return f"{self.sender_external_user_id}"
+        return f"{self.user_id}"
 
 
 class DMReplyTemplate(models.Model):
@@ -142,10 +148,41 @@ class AutoReplyRule(models.Model):
 
 class WebhookEvent(models.Model):
     platform = models.CharField('プラットフォーム', max_length=20, choices=Platform.choices)
-    received_at = models.DateTimeField('受信時間', auto_now_add=True)
-    event_type = models.CharField('イベント種類', max_length=100)
+    field = models.CharField('フィールド', max_length=100, blank=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    account = GenericForeignKey('content_type', 'object_id')
     payload = models.JSONField('ペイロード', default=dict)
-    processed = models.BooleanField('処理済み', default=False)
+    signature_valid = models.BooleanField('署名検証', default=True)
+    received_at = models.DateTimeField('受信時間', auto_now_add=True)
 
     def __str__(self):
-        return f"{self.platform}:{self.event_type}"
+        return f"{self.platform}:{self.field}"
+
+
+class Job(models.Model):
+    class Type(models.TextChoices):
+        REPLY = 'REPLY', 'Reply'
+        PUBLISH = 'PUBLISH', 'Publish'
+        INSIGHT = 'INSIGHT', 'Insight'
+
+    class Status(models.TextChoices):
+        PENDING = 'PENDING', 'Pending'
+        RUNNING = 'RUNNING', 'Running'
+        DONE = 'DONE', 'Done'
+        FAILED = 'FAILED', 'Failed'
+
+    job_type = models.CharField('ジョブ種別', max_length=20, choices=Type.choices)
+    platform = models.CharField('プラットフォーム', max_length=20, choices=Platform.choices)
+    content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    account = GenericForeignKey('content_type', 'object_id')
+    args = models.JSONField('引数', default=dict, blank=True)
+    run_at = models.DateTimeField('実行予定時刻')
+    status = models.CharField('ステータス', max_length=20, choices=Status.choices, default=Status.PENDING)
+    retries = models.IntegerField('リトライ回数', default=0)
+    last_error = models.TextField('最終エラー', blank=True, null=True)
+    created_at = models.DateTimeField('作成日時', auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.job_type}:{self.platform}"
