@@ -12,9 +12,9 @@ from django.views.decorators.http import require_POST
 from django.conf import settings
 
 from .models import (
-    ScheduledPost, WebhookEvent, DMMessage, AutoReplyRule, Job, Platform
+    ScheduledPost, WebhookEvent, DMMessage, Platform
 )
-from .services import ig_api, threads_api
+from .services import ig_api, threads_api, auto_reply
 from .services.post_importer import full_import, sync_latest
 
 
@@ -48,21 +48,6 @@ def approve_scheduled(request, pk):
 # --------------------------------------------------------------
 # Webhook handlers
 # --------------------------------------------------------------
-
-
-def _schedule_auto_reply(platform: str, text: str):
-    rules = AutoReplyRule.objects.filter(platform=platform, enabled=True)
-    for rule in rules:
-        keywords = [k.strip() for k in rule.keywords.split(',') if k.strip()]
-        if any(k in text for k in keywords):
-            run_at = timezone.now() + timedelta(minutes=rule.delay_minutes)
-            Job.objects.create(
-                job_type=Job.Type.REPLY,
-                platform=platform,
-                args={"text": rule.reply_template.reply_text},
-                run_at=run_at,
-            )
-
 
 def is_within_24h(sent_at):
     return timezone.now() - sent_at <= timedelta(hours=24)
@@ -99,7 +84,9 @@ def webhook_instagram(request):
                     raw_json=msg,
                 )
                 if is_within_24h(dm.sent_at):
-                    _schedule_auto_reply(Platform.INSTAGRAM, dm.text)
+                    rule = auto_reply.match_rules(Platform.INSTAGRAM, dm.account, dm.text)
+                    if rule:
+                        auto_reply.build_reply_job(dm.account, rule, dm)
 
         # Fallback for legacy "messaging" format used in tests
         for msg in entry.get('messaging', []):
@@ -116,7 +103,9 @@ def webhook_instagram(request):
                 raw_json=msg,
             )
             if is_within_24h(dm.sent_at):
-                _schedule_auto_reply(Platform.INSTAGRAM, dm.text)
+                rule = auto_reply.match_rules(Platform.INSTAGRAM, dm.account, dm.text)
+                if rule:
+                    auto_reply.build_reply_job(dm.account, rule, dm)
 
     return JsonResponse({'status': 'ok'})
 
@@ -132,4 +121,25 @@ def webhook_threads(request):
 
     payload = json.loads(request.body.decode('utf-8') or '{}')
     WebhookEvent.objects.create(platform=Platform.THREADS, field='', payload=payload)
+
+    entries = payload.get('entry', [])
+    for entry in entries:
+        for change in entry.get('changes', []):
+            field = change.get('field')
+            if field not in {'replies', 'messages', 'mentions'}:
+                continue
+            value = change.get('value', {})
+            text = value.get('text', '')
+            user_id = value.get('from', '') or value.get('user_id', '')
+            dm = DMMessage.objects.create(
+                platform=Platform.THREADS,
+                user_id=user_id,
+                text=text,
+                sent_at=timezone.now(),
+                raw_json=value,
+            )
+            if is_within_24h(dm.sent_at):
+                rule = auto_reply.match_rules(Platform.THREADS, dm.account, dm.text)
+                if rule:
+                    auto_reply.build_reply_job(dm.account, rule, dm)
     return JsonResponse({'status': 'ok'})

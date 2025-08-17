@@ -138,9 +138,12 @@ class AutoReplyRule(models.Model):
     object_id = models.PositiveIntegerField(null=True)
     account = GenericForeignKey('content_type', 'object_id')
     keywords = models.TextField('キーワード')
+    use_regex = models.BooleanField('正規表現', default=False)
     delay_minutes = models.IntegerField('遅延分', default=0)
     reply_template = models.ForeignKey(DMReplyTemplate, verbose_name='返信テンプレート', on_delete=models.CASCADE)
     enabled = models.BooleanField('有効', default=True)
+    active_from = models.TimeField('開始時間', null=True, blank=True)
+    active_to = models.TimeField('終了時間', null=True, blank=True)
 
     def __str__(self):
         return self.name
