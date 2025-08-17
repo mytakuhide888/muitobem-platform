@@ -83,6 +83,25 @@ def webhook_instagram(request):
     # very small subset for tests
     entries = payload.get('entry', [])
     for entry in entries:
+        # New style payload: entry -> changes[] -> value.messages[]
+        changes = entry.get('changes', [])
+        for change in changes:
+            if change.get('field') != 'messages':
+                continue
+            for msg in change.get('value', {}).get('messages', []):
+                text = msg.get('text', '')
+                user_id = msg.get('from', {}).get('id', '')
+                dm = DMMessage.objects.create(
+                    platform=Platform.INSTAGRAM,
+                    user_id=user_id,
+                    text=text,
+                    sent_at=timezone.now(),
+                    raw_json=msg,
+                )
+                if is_within_24h(dm.sent_at):
+                    _schedule_auto_reply(Platform.INSTAGRAM, dm.text)
+
+        # Fallback for legacy "messaging" format used in tests
         for msg in entry.get('messaging', []):
             message = msg.get('message')
             if not message:
