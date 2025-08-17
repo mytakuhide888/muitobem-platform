@@ -11,12 +11,16 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "appuser", "--password=apppass"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 20s
 
   django:
     build: ./backend
-    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./backend:/app
       - .:/app
     ports:
       - "8000:8000"
@@ -26,8 +30,11 @@ services:
       - MYSQL_DB=appdb
       - MYSQL_USER=appuser
       - MYSQL_PASSWORD=apppass
+    env_file:
+      - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   nginx:
     image: nginx:latest
