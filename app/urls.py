@@ -18,11 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from social import views as social_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('social/', include('social.urls')),
     path('sns/ig/', include(('ig.urls', 'ig'), namespace='ig')),
     path('sns/th/', include(('th.urls', 'th'), namespace='th')),
+    # Legacy app handles some webhooks but new endpoints are provided below
     path('webhooks/', include('social_webhooks.urls')),
+    path('webhook/instagram/', social_views.webhook_instagram),
+    path('webhook/threads/', social_views.webhook_threads),
     path('test/', TemplateView.as_view(template_name='test.html'), name='test'),
 ]

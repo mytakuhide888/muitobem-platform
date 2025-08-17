@@ -156,3 +156,21 @@ INSTAGRAM_PROFESSIONAL_ID = '17841475861395637'
 # アプリレビューで取得したアクセストークン
 # (現時点ではテスト用のトークンでOK)
 THREADS_ACCESS_TOKEN = 'YOUR_THREADS_ACCESS_TOKEN'
+
+# --------------------------------------------------
+# Credentials and webhook tokens for Instagram / Threads
+# --------------------------------------------------
+# These values are loaded from environment variables so that the
+# application can run both locally and on production without code
+# changes.  Tests use dummy defaults.
+FACEBOOK_APP_ID = os.getenv('FACEBOOK_APP_ID', '')
+FACEBOOK_APP_SECRET = os.getenv('FACEBOOK_APP_SECRET', '')
+IG_APP_ID = os.getenv('IG_APP_ID', '')
+IG_APP_SECRET = os.getenv('IG_APP_SECRET', '')
+IG_REDIRECT_URI = os.getenv('IG_REDIRECT_URI', '')
+VERIFY_TOKEN_IG = os.getenv('VERIFY_TOKEN_IG', 'test_token_ig')
+VERIFY_TOKEN_TH = os.getenv('VERIFY_TOKEN_TH', 'test_token_th')
+TH_APP_ID = os.getenv('TH_APP_ID', '')
+TH_APP_SECRET = os.getenv('TH_APP_SECRET', '')
+DEFAULT_API_VERSION = os.getenv('DEFAULT_API_VERSION', 'v23.0')
+WORKER_INTERVAL_SEC = int(os.getenv('WORKER_INTERVAL_SEC', '5'))
