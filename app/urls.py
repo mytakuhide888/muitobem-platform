@@ -17,10 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from django.http import HttpResponseRedirect
 
 from social import views as social_views
 
+def root(request):
+    return HttpResponseRedirect("/admin/")
+
 urlpatterns = [
+    path("", root),
     path('admin/', admin.site.urls),
     path('social/', include('social.urls')),
     path('sns/ig/', include(('ig.urls', 'ig'), namespace='ig')),
