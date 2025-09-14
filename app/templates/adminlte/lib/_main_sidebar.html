@@ -12,36 +12,50 @@
         .cc-accordion .cc-section{margin:6px 0 10px 10px;padding-left:8px;border-left:3px solid #d9e1f2}
         .cc-accordion a.cc-link{display:block;padding:6px 10px;text-decoration:none}
       </style>
+
       <div class="cc-accordion">
         <!-- インスタグラム管理 -->
         <details data-cc-acc-key="ig" open>
           <summary>インスタグラム管理</summary>
           <div class="cc-section">
-            {% for app in app_list %}{% if app.app_label == "ig" %}
-              {% for model in app.models %}<a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>{% endfor %}
-            {% endif %}{% endfor %}
+            {% for app in app_list %}
+              {% if app.app_label == 'ig' %}
+                {% for model in app.models %}
+                  <a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
           </div>
         </details>
+
         <!-- Threads管理 -->
         <details data-cc-acc-key="th" open>
           <summary>Threads管理</summary>
           <div class="cc-section">
-            {% for app in app_list %}{% if app.app_label == "th" %}
-              {% for model in app.models %}<a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>{% endfor %}
-            {% endif %}{% endfor %}
+            {% for app in app_list %}
+              {% if app.app_label == 'th' %}
+                {% for model in app.models %}
+                  <a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
           </div>
         </details>
+
         <!-- SNS管理 -->
         <details data-cc-acc-key="sns">
           <summary>SNS管理</summary>
           <div class="cc-section">
             {% for app in app_list %}
-              {% if app.app_label in "sns_core social social_core webhooks social_webhooks social_scheduler".split %}
-                {% for model in app.models %}<a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>{% endfor %}
+              {% if app.app_label == 'sns_core' or app.app_label == 'social' or app.app_label == 'social_core' or app.app_label == 'webhooks' or app.app_label == 'social_webhooks' or app.app_label == 'social_scheduler' %}
+                {% for model in app.models %}
+                  <a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>
+                {% endfor %}
               {% endif %}
             {% endfor %}
           </div>
         </details>
+
         <!-- モール管理（プレースホルダ） -->
         <details data-cc-acc-key="mall">
           <summary>モール管理</summary>
@@ -51,16 +65,33 @@
             <a class="cc-link" href="/admin/#mall-aupay">au payモール管理</a>
           </div>
         </details>
+
         <!-- アカウント管理 -->
         <details data-cc-acc-key="accounts">
           <summary>アカウント管理</summary>
           <div class="cc-section">
-            {% for app in app_list %}{% if app.app_label == "auth" %}
-              {% for model in app.models %}<a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>{% endfor %}
-            {% endif %}{% endfor %}
+            {% for app in app_list %}
+              {% if app.app_label == 'auth' %}
+                {% for model in app.models %}
+                  <a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
           </div>
         </details>
       </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded',function(){
+          document.querySelectorAll('[data-cc-acc-key]').forEach(function(el){
+            const key='cc-acc:'+el.dataset.ccAccKey;
+            const opened=localStorage.getItem(key);
+            if(opened==='open') el.setAttribute('open','');
+            el.addEventListener('toggle',()=>localStorage.setItem(key,el.open?'open':'closed'));
+          });
+        });
+      </script>
     </nav>
   </div>
 </aside>
+
