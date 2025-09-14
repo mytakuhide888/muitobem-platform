@@ -47,6 +47,7 @@ SECRET_KEY = os.getenv(
 
 # === Applications ===
 INSTALLED_APPS = [
+    # Ensure AdminLTE templates override default admin templates
     "django_adminlte3",
     "django.contrib.admin",
     "django.contrib.auth",
