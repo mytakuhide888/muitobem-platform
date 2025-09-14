@@ -82,76 +82,26 @@ class YaItemDetail(models.Model):
     g_n_val = models.TextField(max_length=300, default='')
     g_s_val = models.TextField(max_length=300, default='')
     g_detail = models.TextField(max_length=300, default='')
-    g_img_src_1 = models.TextField(max_length=300, default='')
-    g_img_src_2 = models.TextField(max_length=300, default='')
-    g_img_src_3 = models.TextField(max_length=300, default='')
-    g_img_src_4 = models.TextField(max_length=300, default='')
-    g_img_src_5 = models.TextField(max_length=300, default='')
-    g_img_src_6 = models.TextField(max_length=300, default='')
-    g_img_src_7 = models.TextField(max_length=300, default='')
-    g_img_src_8 = models.TextField(max_length=300, default='')
-    g_img_src_9 = models.TextField(max_length=300, default='')
-    g_img_src_10 = models.TextField(max_length=300, default='')
-    g_img_src_11 = models.TextField(max_length=300, default='')
-    g_img_src_12 = models.TextField(max_length=300, default='')
-    g_img_src_13 = models.TextField(max_length=300, default='')
-    g_img_src_14 = models.TextField(max_length=300, default='')
-    g_img_src_15 = models.TextField(max_length=300, default='')
-    g_img_src_16 = models.TextField(max_length=300, default='')
-    g_img_src_17 = models.TextField(max_length=300, default='')
-    g_img_src_18 = models.TextField(max_length=300, default='')
-    g_img_src_19 = models.TextField(max_length=300, default='')
-    g_img_src_20 = models.TextField(max_length=300, default='')
-    g_img_alt_1 = models.TextField(max_length=300, default='')
-    g_img_alt_2 = models.TextField(max_length=300, default='')
-    g_img_alt_3 = models.TextField(max_length=300, default='')
-    g_img_alt_4 = models.TextField(max_length=300, default='')
-    g_img_alt_5 = models.TextField(max_length=300, default='')
-    g_img_alt_6 = models.TextField(max_length=300, default='')
-    g_img_alt_7 = models.TextField(max_length=300, default='')
-    g_img_alt_8 = models.TextField(max_length=300, default='')
-    g_img_alt_9 = models.TextField(max_length=300, default='')
-    g_img_alt_10 = models.TextField(max_length=300, default='')
-    g_img_alt_11 = models.TextField(max_length=300, default='')
-    g_img_alt_12 = models.TextField(max_length=300, default='')
-    g_img_alt_13 = models.TextField(max_length=300, default='')
-    g_img_alt_14 = models.TextField(max_length=300, default='')
-    g_img_alt_15 = models.TextField(max_length=300, default='')
-    g_img_alt_16 = models.TextField(max_length=300, default='')
-    g_img_alt_17 = models.TextField(max_length=300, default='')
-    g_img_alt_18 = models.TextField(max_length=300, default='')
-    g_img_alt_19 = models.TextField(max_length=300, default='')
-    g_img_alt_20 = models.TextField(max_length=300, default='')
-    g_det_title_1 = models.TextField(max_length=300, default='')
-    g_det_title_2 = models.TextField(max_length=300, default='')
-    g_det_title_3 = models.TextField(max_length=300, default='')
-    g_det_title_4 = models.TextField(max_length=300, default='')
-    g_det_title_5 = models.TextField(max_length=300, default='')
-    g_det_title_6 = models.TextField(max_length=300, default='')
-    g_det_title_7 = models.TextField(max_length=300, default='')
-    g_det_title_8 = models.TextField(max_length=300, default='')
-    g_det_title_9 = models.TextField(max_length=300, default='')
-    g_det_title_10 = models.TextField(max_length=300, default='')
-    g_det_title_11 = models.TextField(max_length=300, default='')
-    g_det_title_12 = models.TextField(max_length=300, default='')
-    g_det_title_13 = models.TextField(max_length=300, default='')
-    g_det_title_14 = models.TextField(max_length=300, default='')
-    g_det_title_15 = models.TextField(max_length=300, default='')
-    g_det_cont_1 = models.TextField(max_length=2000, default='')
-    g_det_cont_2 = models.TextField(max_length=2000, default='')
-    g_det_cont_3 = models.TextField(max_length=2000, default='')
-    g_det_cont_4 = models.TextField(max_length=2000, default='')
-    g_det_cont_5 = models.TextField(max_length=2000, default='')
-    g_det_cont_6 = models.TextField(max_length=2000, default='')
-    g_det_cont_7 = models.TextField(max_length=2000, default='')
-    g_det_cont_8 = models.TextField(max_length=2000, default='')
-    g_det_cont_9 = models.TextField(max_length=2000, default='')
-    g_det_cont_10 = models.TextField(max_length=2000, default='')
-    g_det_cont_11 = models.TextField(max_length=2000, default='')
-    g_det_cont_12 = models.TextField(max_length=2000, default='')
-    g_det_cont_13 = models.TextField(max_length=2000, default='')
-    g_det_cont_14 = models.TextField(max_length=2000, default='')
-    g_det_cont_15 = models.TextField(max_length=2000, default='')
+    g_img_srcs = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text="商品画像URLの配列（旧: g_img_src_1..20）"
+    )
+
+    g_img_alts = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text="商品画像ALTテキストの配列（旧: g_img_alt_1..20）"
+    )
+
+    g_det_titles = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text="詳細セクションの見出し配列（旧: g_det_title_1..15）"
+    )
+
+    g_det_conts = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text="詳細セクション本文の配列（旧: g_det_cont_1..15）"
+    )
+
     create_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -1103,97 +1053,58 @@ class QooAsinDetail(models.Model):
     # スクレイピングの結果
     product_title = models.TextField(max_length=200, null=True, default='', blank=True)  # タイトル
     description = models.TextField(max_length=400, null=True, default='', blank=True)  # description
+
     # 商品の詳細 productOverview_feature_div
-    p_o_f_0 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品の詳細 productOverview_feature_div
-    p_o_f_1 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品の詳細 productOverview_feature_div
-    p_o_f_2 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品の詳細 productOverview_feature_div
-    p_o_f_3 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品の詳細 productOverview_feature_div
-    p_o_f_4 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品の詳細 productOverview_feature_div
-    p_o_f_5 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品の詳細 productOverview_feature_div
-    p_o_f_6 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品の詳細 productOverview_feature_div
-    p_o_f_7 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品の詳細 productOverview_feature_div
-    p_o_f_8 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品の詳細 productOverview_feature_div
-    p_o_f_9 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品の詳細 productOverview_feature_div
+    # 旧: p_o_f_0 .. p_o_f_9 (TextField)
+    p_o_f = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text="productOverview_feature_div; リスト[str]（旧: p_o_f_0..9）"
+    )
+
     # 商品特徴 feature-bullets
-    f_b_0 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品特徴 feature-bullets
-    f_b_1 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品特徴 feature-bullets
-    f_b_2 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品特徴 feature-bullets
-    f_b_3 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品特徴 feature-bullets
-    f_b_4 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品特徴 feature-bullets
-    f_b_5 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品特徴 feature-bullets
-    f_b_6 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品特徴 feature-bullets
-    f_b_7 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品特徴 feature-bullets
-    f_b_8 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品特徴 feature-bullets
-    f_b_9 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 商品特徴 feature-bullets
+    # 旧: f_b_0 .. f_b_9 (TextField)
+    feature_bullets = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text="feature-bullets; リスト[str]（旧: f_b_0..9）"
+    )
+
     # 画面下部_詳細情報 productDetails_techSpec_section_1
-    p_d_t_s_th_0 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 th
-    p_d_t_s_th_1 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 th
-    p_d_t_s_th_2 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 th
-    p_d_t_s_th_3 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 th
-    p_d_t_s_th_4 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 th
-    p_d_t_s_th_5 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 th
-    p_d_t_s_th_6 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 th
-    p_d_t_s_th_7 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 th
-    p_d_t_s_th_8 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 th
-    p_d_t_s_th_9 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 th
-    p_d_t_s_td_0 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 td
-    p_d_t_s_td_1 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 td
-    p_d_t_s_td_2 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 td
-    p_d_t_s_td_3 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 td
-    p_d_t_s_td_4 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 td
-    p_d_t_s_td_5 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 td
-    p_d_t_s_td_6 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 td
-    p_d_t_s_td_7 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 td
-    p_d_t_s_td_8 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 td
-    p_d_t_s_td_9 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_詳細情報 td
+    # 旧: p_d_t_s_th_0..9 / p_d_t_s_td_0..9 (TextField)
+    techspec_th = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text="techSpec th; リスト[str]（旧: p_d_t_s_th_0..9）"
+    )
+    techspec_td = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text="techSpec td; リスト[str]（旧: p_d_t_s_td_0..9）"
+    )
+
     # 画面下部_商品の説明 productDescription
-    p_d_0 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_商品の説明 productDescription
-    p_d_1 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_商品の説明 productDescription
-    p_d_2 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_商品の説明 productDescription
-    p_d_3 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_商品の説明 productDescription
-    p_d_4 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_商品の説明 productDescription
-    p_d_5 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_商品の説明 productDescription
-    p_d_6 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_商品の説明 productDescription
-    p_d_7 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_商品の説明 productDescription
-    p_d_8 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_商品の説明 productDescription
-    p_d_9 = models.TextField(max_length=1000, null=True, default='', blank=True)  # 画面下部_商品の説明 productDescription
-    # サムネイル画像 span[contains(@id,'a-autoid-') and contains(@id,'-announce')]/img/@src")
-    img_tag_0 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_1 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_2 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_3 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_4 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_5 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_6 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_7 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_8 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_9 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_10 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_11 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_12 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_13 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_14 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_15 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_16 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_17 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_18 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
-    img_tag_19 = models.TextField(max_length=1000, null=True, default='', blank=True)  # サムネイル画像
+    # 旧: p_d_0 .. p_d_9 (TextField)
+    product_description = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text="productDescription; リスト[str]（旧: p_d_0..9）"
+    )
+
+    # サムネイル画像 span[contains(@id,'a-autoid-') and contains(@id,'-announce')]/img/@src
+    # 旧: img_tag_0 .. img_tag_19 (TextField)
+    img_tags = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text="サムネイル画像URL; リスト[str]（旧: img_tag_0..19）"
+    )
 
     # 商品紹介コンテンツ
-    # apm-sidemodule
-    img_a_s_m_0 = models.TextField(max_length=1000, null=True, default='', blank=True)  # div apm-sidemodule-imageleft
-    p_a_s_m_0 = models.TextField(max_length=2000, null=True, default='', blank=True)  # div apm-sidemodule-textright
-    # aplus-module-wrapper 複数存在する
-    img_a_m_w_0 = models.TextField(max_length=1000, null=True, default='', blank=True)  # div aplus-module-wrapper img
-    img_a_m_w_1 = models.TextField(max_length=1000, null=True, default='', blank=True)  # div aplus-module-wrapper img
-    img_a_m_w_2 = models.TextField(max_length=1000, null=True, default='', blank=True)  # div aplus-module-wrapper img
-    img_a_m_w_3 = models.TextField(max_length=1000, null=True, default='', blank=True)  # div aplus-module-wrapper img
-    img_a_m_w_4 = models.TextField(max_length=1000, null=True, default='', blank=True)  # div aplus-module-wrapper img
-    p_a_m_w_0 = models.TextField(max_length=2000, null=True, default='', blank=True)  # div aplus-module-wrapper text
-    p_a_m_w_1 = models.TextField(max_length=2000, null=True, default='', blank=True)  # div aplus-module-wrapper text
-    p_a_m_w_2 = models.TextField(max_length=2000, null=True, default='', blank=True)  # div aplus-module-wrapper text
-    p_a_m_w_3 = models.TextField(max_length=2000, null=True, default='', blank=True)  # div aplus-module-wrapper text
-    p_a_m_w_4 = models.TextField(max_length=2000, null=True, default='', blank=True)  # div aplus-module-wrapper text
+    # 旧: apm-sidemodule（img_a_s_m_0 / p_a_s_m_0）
+    # 旧: aplus-module-wrapper（img_a_m_w_0..4 / p_a_m_w_0..4）
+    # まとめて “1要素 = {img: str, text: str, kind: 'apm'|'aplus'}” として格納
+    aplus_modules = models.JSONField(
+        null=True, blank=True, default=list,
+        help_text=(
+            "商品紹介コンテンツ; リスト[{'img': str, 'text': str, 'kind': 'apm'|'aplus'}] "
+            "(旧: img_a_s_m_0/p_a_s_m_0, img_a_m_w_0..4/p_a_m_w_0..4)"
+        )
+    )
+
 
     # blacklist関連の判定結果
     is_blacklist_ok = models.BooleanField(null=True, blank=True, default=False)  # ブラックリスト判定　False:NG判定 True:OK
