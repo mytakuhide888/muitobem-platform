@@ -13,3 +13,7 @@ mysql-data/
 
 # OS
 .DS_Store
+
+# ignore local app-level docker files
+/app/Dockerfile
+/app/docker-compose.yml
