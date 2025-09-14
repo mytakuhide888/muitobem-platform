@@ -47,13 +47,13 @@ SECRET_KEY = os.getenv(
 
 # === Applications ===
 INSTALLED_APPS = [
+    "django_adminlte3",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_adminlte3",
     "sns_core",
     "social",
     "webhooks",
