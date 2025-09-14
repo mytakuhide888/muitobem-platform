@@ -35,4 +35,5 @@ urlpatterns = [
     path('webhook/instagram/', social_views.webhook_instagram),
     path('webhook/threads/', social_views.webhook_threads),
     path('test/', TemplateView.as_view(template_name='test.html'), name='test'),
+    path('yaget/', include(('yaget.urls', 'yaget'), namespace='yaget')),
 ]
