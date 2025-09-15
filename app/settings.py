@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "social_webhooks",
     "social_scheduler",
     "yaget.apps.YagetConfig",
+    "app.console.apps.ConsoleConfig",
 ]
 
 # === Middleware ===

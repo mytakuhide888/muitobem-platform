@@ -51,6 +51,14 @@
           </ul>
         </li>
 
+        {% url 'console:index' as console_index_url %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ console_index_url }}">
+            <i class="nav-icon fas fa-tools"></i>
+            <p>SNS運用コンソール</p>
+          </a>
+        </li>
+        
         <!-- モール管理（yaget など） -->
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link"><i class="nav-icon fas fa-store"></i><p>モール管理<i class="right fas fa-angle-left"></i></p></a>
