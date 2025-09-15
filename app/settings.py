@@ -165,3 +165,34 @@ TH_APP_ID = os.getenv("TH_APP_ID", "")
 TH_APP_SECRET = os.getenv("TH_APP_SECRET", "")
 DEFAULT_API_VERSION = os.getenv("DEFAULT_API_VERSION", "v23.0")
 WORKER_INTERVAL_SEC = int(os.getenv("WORKER_INTERVAL_SEC", "5"))
+
+LOG_DIR = BASE_DIR / "deploy"
+LOG_DIR.mkdir(parents=True, exist_ok=True)  # 念のため
+LOG_FILE = LOG_DIR / "app.log"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        },
+    },
+    "handlers": {
+        "console_stream": {  # 既存の標準出力も維持
+            "class": "logging.StreamHandler",
+        },
+        "file": {  # ← これで /app/deploy/app.log に必ず出力
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": str(LOG_FILE),
+            "maxBytes": 2 * 1024 * 1024,
+            "backupCount": 3,
+            "formatter": "simple",
+        },
+    },
+    "root": {
+        "handlers": ["console_stream", "file"],
+        "level": "INFO",
+    },
+}

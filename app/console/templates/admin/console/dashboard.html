@@ -1,5 +1,35 @@
 {% extends "admin/console/base.html" %}
+
+{% block title %}運用コンソール{% endblock %}
+{% block breadcrumbs %}<div class="breadcrumbs">運用コンソール</div>{% endblock %}
+
 {% block content %}
-  <h2>ダッシュボード</h2>
-  <p>ここにメトリクスやショートカットを配置します。</p>
+<h1>運用コンソール</h1>
+<p>ここから各種メンテナンス／確認ツールにアクセスできます。</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:12px;">
+  <section class="module">
+    <h2>アカウント連携テスト</h2>
+    <p>DB疎通や主要モデルの存在をチェックします。</p>
+    <p><a class="button" href="{% url 'console:connection_test' %}">テストを実行</a></p>
+  </section>
+
+  <section class="module">
+    <h2>直近ログの確認</h2>
+    <p>コンテナ標準出力 or ログファイルから末尾を表示します。</p>
+    <p><a class="button" href="{% url 'console:logs' %}">ログを見る</a></p>
+  </section>
+
+  <section class="module">
+    <h2>アカウント連携一覧</h2>
+    <p>連携済みの Instagram / Threads アカウントを確認できます。</p>
+    <p><a class="button" href="{% url 'console:integration' %}">一覧を開く</a></p>
+  </section>
+
+  <section class="module">
+    <h2>Webhook受信テスト</h2>
+    <p>サンプルJSONを送って受信処理の疎通を確認します。</p>
+    <p><a class="button" href="{% url 'console:webhook_test' %}">テストを開く</a></p>
+  </section>
+</div>
 {% endblock %}

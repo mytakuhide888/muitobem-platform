@@ -52,11 +52,37 @@
         </li>
 
         {% url 'console:index' as console_index_url %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ console_index_url }}">
+        {% url 'console:connection_test' as console_conn_url %}
+        {% url 'console:logs' as console_logs_url %}
+        {% url 'console:webhook_test' as console_webhook_url %}
+
+        <li class="nav-item has-treeview{% if request.path|slice:':9' == '/console/' %} menu-open{% endif %}" data-cc-key="console">
+          <a href="#" class="nav-link">
             <i class="nav-icon fas fa-tools"></i>
-            <p>SNS運用コンソール</p>
+            <p>SNS運用コンソール<i class="right fas fa-angle-left"></i></p>
           </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ console_index_url }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i><p>ダッシュボード</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ console_conn_url }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i><p>アカウント連携テスト</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ console_logs_url }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i><p>直近ログの確認</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ console_webhook_url }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i><p>Webhook受信テスト</p>
+              </a>
+            </li>
+          </ul>
         </li>
         
         <!-- モール管理（yaget など） -->

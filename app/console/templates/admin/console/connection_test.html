@@ -1,0 +1,23 @@
+{% extends "admin/console/base.html" %}
+{% block console_content %}
+  <h2>アカウント連携テスト</h2>
+  <p>最小限の健全性チェックの結果です。</p>
+
+  <div class="cc-cards">
+    {% for label, ok, msg in checks %}
+      <div class="cc-card">
+        <h3>{{ label }}</h3>
+        <p>
+          {% if ok is True %}<strong style="color:#2e7d32">OK</strong>
+          {% elif ok is False %}<strong style="color:#c62828">NG</strong>
+          {% else %}<strong>—</strong>{% endif %}
+          ：{{ msg }}
+        </p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="cc-actions" style="margin-top:1rem">
+    <a class="btn" href="{% url 'console:index' %}">← ダッシュボードに戻る</a>
+  </div>
+{% endblock %}
