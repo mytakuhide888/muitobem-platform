@@ -1,5 +1,6 @@
-{% load i18n static admin_urls admin_extras %}
-{% get_app_list as app_list %}
+{% load i18n static admin_urls admin_list %}
+{% get_app_list request as app_list %}
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <a href="{% url 'admin:index' %}" class="brand-link">
     <span class="brand-text font-weight-light">{% trans 'バイヤーズ 管理画面' %}</span>
@@ -11,6 +12,7 @@
         .cc-accordion .cc-section{margin:6px 0 10px 10px;padding-left:8px;border-left:3px solid #d9e1f2}
         .cc-accordion a.cc-link{display:block;padding:6px 10px;text-decoration:none}
       </style>
+
       <div class="cc-accordion">
         <!-- インスタグラム管理 -->
         <details data-cc-acc-key="ig" open>

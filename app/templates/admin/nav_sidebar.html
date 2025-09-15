@@ -1,0 +1,88 @@
+{% load i18n static admin_urls %}
+<nav id="nav-sidebar" aria-label="{% translate 'Sidebar' %}">
+  <style>
+    .cc-accordion summary{cursor:pointer;padding:8px 12px;font-weight:600;border-radius:4px;background:#2c3e50;color:#fff;margin:8px 0 4px}
+    .cc-accordion .cc-section{margin:6px 0 10px 10px;padding-left:8px;border-left:3px solid #d9e1f2}
+    .cc-accordion a.cc-link{display:block;padding:6px 10px;text-decoration:none}
+    .cc-subhead{font-size:12px;opacity:.8;margin:6px 0 2px 2px}
+    details[open] summary{opacity:.95}
+  </style>
+
+  <div class="cc-accordion">
+
+    {# --- Threads管理（app_label=th） --- #}
+    {% for app in app_list %}
+      {% if app.app_label == 'th' %}
+        <details open>
+          <summary>Threads管理</summary>
+          <div class="cc-section">
+            {% for model in app.models %}
+              {% if model.admin_url %}
+                <a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>
+              {% else %}
+                <span class="cc-link">{{ model.name }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </details>
+      {% endif %}
+    {% endfor %}
+
+    {# --- SNS管理（ig / social / sns_core をまとめる） --- #}
+    <details open>
+      <summary>SNS管理</summary>
+      <div class="cc-section">
+        {% for app in app_list %}
+          {% if app.app_label == 'ig' or app.app_label == 'social' or app.app_label == 'sns_core' %}
+            <div class="cc-subhead">{{ app.name }}</div>
+            {% for model in app.models %}
+              {% if model.admin_url %}
+                <a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>
+              {% else %}
+                <span class="cc-link">{{ model.name }}</span>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </details>
+
+    {# --- モール管理（仮に yaget を想定。必要なら app_label を調整） --- #}
+    {% for app in app_list %}
+      {% if app.app_label == 'yaget' %}
+        <details>
+          <summary>モール管理</summary>
+          <div class="cc-section">
+            {% for model in app.models %}
+              {% if model.admin_url %}
+                <a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>
+              {% else %}
+                <span class="cc-link">{{ model.name }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </details>
+      {% endif %}
+    {% endfor %}
+
+    {# --- その他（上記に含めなかったアプリを一括表示） --- #}
+    <details>
+      <summary>その他</summary>
+      <div class="cc-section">
+        {% for app in app_list %}
+          {% if app.app_label != 'th' and app.app_label != 'ig' and app.app_label != 'social' and app.app_label != 'sns_core' and app.app_label != 'yaget' %}
+            <div class="cc-subhead">{{ app.name }}</div>
+            {% for model in app.models %}
+              {% if model.admin_url %}
+                <a class="cc-link" href="{{ model.admin_url }}">{{ model.name }}</a>
+              {% else %}
+                <span class="cc-link">{{ model.name }}</span>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </details>
+
+  </div>
+</nav>
