@@ -27,9 +27,33 @@
   </section>
 
   <section class="module">
+    <h2>返信テンプレート管理</h2>
+    <p>差し込み変数つきテンプレを作成・編集できます。</p>
+    <p><a class="button" href="{% url 'console:tpl_list' %}">テンプレート一覧へ</a></p>
+  </section>
+
+  <section class="module">
+    <h2>Webhookイベント確認</h2>
+    <p>最近の受信イベントの一覧と詳細(JSON)を確認できます。</p>
+    <p><a class="button" href="{% url 'console:webhook_events' %}">一覧を開く</a></p>
+  </section>
+
+  <section class="module">
     <h2>Webhook受信テスト</h2>
     <p>サンプルJSONを送って受信処理の疎通を確認します。</p>
     <p><a class="button" href="{% url 'console:webhook_test' %}">テストを開く</a></p>
+  </section>
+
+  <section class="module">
+    <h2>設定ウィザード</h2>
+    <p>初回セットアップを3ステップで完了します。</p>
+    <p><a class="button" href="{% url 'console:setup_env' %}">ウィザードを開始</a></p>
+  </section>
+
+  <section class="module">
+    <h2>連携ガイド</h2>
+    <p>初回セットアップの手順と動作確認の流れをまとめています。</p>
+    <p><a class="button" href="{% url 'console:help' %}">ガイドを開く</a></p>
   </section>
 </div>
 {% endblock %}

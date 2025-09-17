@@ -33,6 +33,12 @@ SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", "True").lower() ==
 
 #ALLOWED_HOSTS = [h for h in os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",") if h] or []
 ALLOWED_HOSTS = [h.strip() for h in hosts_raw.split(",") if h.strip()]
+try:
+    if "testserver" not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append("testserver")
+except NameError:
+    ALLOWED_HOSTS = ["testserver"]
+    
 LANGUAGE_CODE = "ja"
 TIME_ZONE = os.getenv("DJANGO_TIME_ZONE", "Asia/Tokyo")
 USE_I18N = True
