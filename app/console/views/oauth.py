@@ -152,3 +152,6 @@ def meta_import(request):
             errors.append({"page": p, "error": str(e)})
 
     return JsonResponse({"ok": True, "saved": saved, "errors": errors})
+
+def meta_oauth_cb(request):
+    return meta_callback(request)
