@@ -8,8 +8,12 @@ from social_core.models import (
 
 class ThreadsAccount(BaseSocialAccount):
     threads_user_id = models.CharField('ThreadsユーザーID', max_length=100)
-    access_token = models.TextField('アクセストークン', blank=True, null=True)
+    access_token = models.TextField('アクセストークン', blank=True, default='')
     webhook_verify_token = models.CharField('Webhook検証トークン', max_length=100, blank=True, null=True)
+    token_expires_at = models.DateTimeField(null=True, blank=True)
+    permissions = models.JSONField(default=dict, blank=True)  # {"granted":[...], "declined":[...]}
+    webhook_subscribed = models.BooleanField(default=False)
+    webhook_subscribed_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         db_table = 'meta_th_accounts'

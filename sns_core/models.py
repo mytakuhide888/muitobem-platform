@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 # sns_core/models.py
@@ -54,3 +55,19 @@ class ScheduledPost(models.Model):
     scheduled_at = models.DateTimeField()
     posted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class MetaUserToken(models.Model):
+    """Metaのユーザアクセストークン（連携オーナー単位）"""
+    user_id = models.CharField(max_length=64)  # graph user id
+    access_token = models.TextField()          # 必要なら暗号化に差し替え可
+    expires_at = models.DateTimeField(null=True, blank=True)
+    granted_scopes = models.JSONField(default=list, blank=True)
+    declined_scopes = models.JSONField(default=list, blank=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'meta_user_tokens'
+        verbose_name = 'Metaユーザトークン'

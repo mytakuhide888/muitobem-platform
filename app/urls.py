@@ -37,4 +37,8 @@ urlpatterns = [
     path('webhook/threads/', social_views.webhook_threads),
     path('test/', TemplateView.as_view(template_name='test.html'), name='test'),
     path('yaget/', include(('yaget.urls', 'yaget'), namespace='yaget')),
+    path("oauth/meta/", include(("app.console.urls_public", "meta_public"))),
+    path("webhook/meta/", include(("app.console.urls_webhook", "meta_webhook"))),
+    path("", include(("app.console.urls_public", "console_public"), namespace="console_public")),
+
 ]

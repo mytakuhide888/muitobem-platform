@@ -202,3 +202,11 @@ LOGGING = {
         "level": "INFO",
     },
 }
+
+META_APP_ID = os.getenv("META_APP_ID", "")
+META_APP_SECRET = os.getenv("META_APP_SECRET", "")
+# デフォルトは console_public の webhook URL を自動解決
+META_WEBHOOK_VERIFY_TOKEN = os.getenv("META_WEBHOOK_VERIFY_TOKEN", "dev-verify-token")
+
+# OAuth のコールバック URL を固定で使いたいときは指定、未指定なら request から絶対URL生成
+META_OAUTH_REDIRECT_URI = os.getenv("META_OAUTH_REDIRECT_URI", "")

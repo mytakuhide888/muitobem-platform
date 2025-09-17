@@ -1,0 +1,48 @@
+{% extends "admin/console/base.html" %}
+{% block title %}アカウント連携{% endblock %}
+{% block breadcrumbs %}<div class="breadcrumbs">運用コンソール › アカウント連携</div>{% endblock %}
+{% block content %}
+<h1>アカウント連携</h1>
+
+<p>
+  <a class="button default" href="{% url 'meta_public:meta_connect' %}">Metaアカウントを連携</a>
+</p>
+
+<h2>取り込み候補（IG付きPage）</h2>
+{% if not token_present %}<p>「Metaアカウントを連携」を押して、取り込み候補を取得してください。</p>{% endif %}
+<form method="post" action="{% url 'meta_public:meta_import' %}">
+  {% csrf_token %}
+  <table class="listing">
+    <thead><tr><th></th><th>Page</th><th>IG</th></tr></thead>
+    <tbody>
+      {% for item in pages_igs %}
+        <tr>
+          <td><input type="checkbox" name="ig_ids" value="{{ item.ig.id }}"></td>
+          <td>{{ item.page.name }} ({{ item.page.id }})</td>
+          <td>{{ item.ig.username }} ({{ item.ig.id }})</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="3">候補がありません。</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p><button class="button">選択を取り込む</button></p>
+</form>
+
+<h2>登録済み（Instagram）</h2>
+<table class="listing">
+  <thead><tr><th>ユーザー名</th><th>外部ID</th><th>Webhook</th><th>トークン期限</th></tr></thead>
+  <tbody>
+    {% for a in existing %}
+      <tr>
+        <td>{{ a.username }}</td>
+        <td>{{ a.external_id }}</td>
+        <td>{% if a.webhook_subscribed %}ON{% else %}OFF{% endif %}</td>
+        <td>{{ a.token_expires_at|default:"-" }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="4">まだ登録がありません。</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

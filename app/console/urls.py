@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.urls import path
 from . import views
+from .views import accounts as acc, permissions as perm
 
 app_name = "console"
 
@@ -11,6 +12,7 @@ urlpatterns = [
     path("integration/", views.integration, name="integration"),
     path("webhook-test/", views.webhook_test, name="webhook_test"),
     path("webhook-events/", views.webhook_events, name="webhook_events"),
+    path("webhook/setup/", views.webhook_test, name="webhook_setup"),
     path("webhook-replay/<str:src>/<int:pk>/", views.webhook_replay, name="webhook_replay"),
     path("help/", views.help_guide, name="help"),
     path("setup/", views.setup_env, name="setup_env"),
@@ -23,4 +25,7 @@ urlpatterns = [
     path("templates/export/", views.tpl_export, name="tpl_export"),
     path("templates/import/", views.tpl_import, name="tpl_import"),
     path("templates/preview/", views.tpl_preview_api, name="tpl_preview_api"),
+    path("accounts/",    acc.accounts_list, name="accounts"),
+    path("permissions/", perm.permissions_check, name="permissions"),
+
 ]
